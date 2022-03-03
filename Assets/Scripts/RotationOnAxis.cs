@@ -13,13 +13,13 @@ public class RotationOnAxis : MonoBehaviour
     void Update()
     {
         if (axisChoice==RotationAxis.aroundForwardAxis) {
-            rotationPattern = new Vector3(0, 0, speed);
+            rotationPattern = new Vector3(0, 0, speed * Time.deltaTime);
 
         } else if (axisChoice==RotationAxis.aroundUpAxis) {
-            rotationPattern = new Vector3(0, speed, 0);
+            rotationPattern = new Vector3(0, speed * Time.deltaTime, 0);
 
         } else if (axisChoice==RotationAxis.aroundRightAxis) {
-            rotationPattern = new Vector3(speed, 0, 0);
+            rotationPattern = new Vector3(speed * Time.deltaTime, 0, 0);
 
         }
 

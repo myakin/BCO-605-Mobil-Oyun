@@ -29,7 +29,7 @@ public class MovementOnAxis : MonoBehaviour {
             movementDirection = transform.right;
         }
 
-        transform.position += movementDirection * (speed * multiplier);
+        transform.position += movementDirection * (speed * multiplier * Time.deltaTime);
 
         if ((transform.position - controlPosition).magnitude > range) {
             multiplier *= -1;
