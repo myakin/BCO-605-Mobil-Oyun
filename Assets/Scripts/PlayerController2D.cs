@@ -20,23 +20,6 @@ public class PlayerController2D : MonoBehaviour
         // float ver = Input.GetAxis("Vertical") * Time.deltaTime; // S(-) ve W(+) tuslari
         
 
-        
-        
-        // // level 1
-        // if (hor<0) {
-        //     GetComponent<SpriteRenderer>().flipX=true;
-        // } else if (hor>0) {
-        //     GetComponent<SpriteRenderer>().flipX=true;
-        // }
-
-
-        // // level 2
-        // if (hor<0 && !GetComponent<SpriteRenderer>().flipX) {
-        //     GetComponent<SpriteRenderer>().flipX=true;
-        // } else if (hor>0 && GetComponent<SpriteRenderer>().flipX) {
-        //     GetComponent<SpriteRenderer>().flipX=false;
-        // }
-
         // level 3
         if (hor<0 && !targetRenderer.flipX) {
             targetRenderer.flipX=true;
@@ -44,23 +27,7 @@ public class PlayerController2D : MonoBehaviour
             targetRenderer.flipX=false;
         }
 
-        // if (hor!=0f)
-        //     GetComponent<Animator>().SetTrigger("Walk");
-        // else 
-        //     GetComponent<Animator>().SetTrigger("Idle");
-
-        // if (hor!=0f) {
-        //     // shifte basiliysa
-        //     if (Input.GetKey(KeyCode.LeftShift)) {
-        //         GetComponent<Animator>().SetBool("isRunning", true);
-        //     } else {
-        //         // shifte basili degilse
-        //         GetComponent<Animator>().SetBool("isWalking", true);
-        //     }
-        // } else 
-        //     GetComponent<Animator>().SetBool("isWalking", false);
-
-
+        
         if (hor!=0f) {
             // shifte basiliysa
             if (Input.GetKey(KeyCode.LeftShift)) {
@@ -92,18 +59,11 @@ public class PlayerController2D : MonoBehaviour
     // }
 
     private void CheckGround() {
-        LayerMask raycastLayer = LayerMask.NameToLayer("Default");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 1f, raycastLayer);
-        // RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 1f, 1<<0);
-        // Debug.Log(hit.transform.name);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector3.down, 1f, 1<<31);
         if (hit && hit.transform.tag=="Platform") {
             transform.SetParent(hit.transform);
         } else {
             transform.SetParent(null);
         }
-    }
-
-    private void OnTriggerEnter2D(Collider2D other) {
-        
     }
 }
