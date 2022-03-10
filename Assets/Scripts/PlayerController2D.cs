@@ -8,10 +8,13 @@ public class PlayerController2D : MonoBehaviour
     [SerializeField] private float runValue = 2;
     private SpriteRenderer targetRenderer;
     private float multiplier = 1;
+    
 
     private void Start() {
         // level 3
         targetRenderer = GetComponent<SpriteRenderer>();
+
+        UIManager.instance.SetScore(DataManager.instance.score);
     }
     
     void Update()
