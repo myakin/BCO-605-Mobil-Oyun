@@ -6,8 +6,12 @@ public class PlayerController2D : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 0.2f; // alternatifi: public float moveSpeed = 0.2f;
     [SerializeField] private float runValue = 2;
+    [SerializeField] private Animator animator;
     private SpriteRenderer targetRenderer;
     private float multiplier = 1;
+    private bool isJumping;
+    private Vector2 originalOffset, originalSize;
+    private IEnumerator jumpResetCoroutine;
     
 
     private void Start() {
@@ -15,12 +19,16 @@ public class PlayerController2D : MonoBehaviour
         targetRenderer = GetComponent<SpriteRenderer>();
 
         UIManager.instance.SetScore(DataManager.instance.score);
+
+        originalOffset = GetComponent<CapsuleCollider2D>().offset;
+        originalSize = GetComponent<CapsuleCollider2D>().size;
     }
     
     void Update()
     {
         float hor = Input.GetAxis("Horizontal") * Time.deltaTime; // A(-) ve D(+) tuslari
         // float ver = Input.GetAxis("Vertical") * Time.deltaTime; // S(-) ve W(+) tuslari
+        float jump = Input.GetAxis("Jump");
         
 
         // level 3
@@ -45,13 +53,50 @@ public class PlayerController2D : MonoBehaviour
             GetComponent<Animator>().SetFloat("moveMode", 0);
 
         
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (jump>0 && !isJumping) {
+            isJumping = true;
             GetComponent<Animator>().SetFloat("moveMode", 4f);
+            
+            GetComponent<CapsuleCollider2D>().offset = new Vector2(originalOffset.x, 1.68f);
+            GetComponent<CapsuleCollider2D>().size = new Vector2(originalSize.x, 1.53f);
+            GetComponent<Rigidbody2D>().simulated = false;
+            
         }
+
+        // CheckIfJumpAnimationIsEnding();
+
+
 
         transform.position += transform.right * (hor * moveSpeed * multiplier);
         CheckGround();
         
+    }
+
+    public void ResetColliderSizeAndOffset() {
+        GetComponent<CapsuleCollider2D>().offset = originalOffset;
+        GetComponent<CapsuleCollider2D>().size = originalSize;
+        GetComponent<Rigidbody2D>().simulated = true;
+        if (jumpResetCoroutine==null) {
+            jumpResetCoroutine = Resetjump();
+            StartCoroutine(jumpResetCoroutine);
+        }
+    }
+
+
+    private IEnumerator Resetjump() {
+        yield return new WaitForSeconds(0.2f);
+        isJumping = false;
+        jumpResetCoroutine = null;
+    }
+
+
+    private void CheckIfJumpAnimationIsEnding() {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("jump")) {
+            if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime>0.9f) {
+                Debug.Log("jump is ending");
+                ResetColliderSizeAndOffset();
+            }
+        }
     }
 
 
@@ -68,5 +113,6 @@ public class PlayerController2D : MonoBehaviour
         } else {
             transform.SetParent(null);
         }
+        // isJumping = false;
     }
 }
