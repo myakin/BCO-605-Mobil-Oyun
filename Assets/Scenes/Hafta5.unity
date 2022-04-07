@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18029553, g: 0.2257272, b: 0.30693007, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -340,7 +340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   runValue: 2
-  score: 0
+  jumpForce: 200
+  animator: {fileID: 207811097}
 --- !u!1001 &354912848
 PrefabInstance:
   m_ObjectHideFlags: 0

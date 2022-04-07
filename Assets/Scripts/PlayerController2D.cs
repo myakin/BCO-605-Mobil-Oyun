@@ -14,6 +14,7 @@ public class PlayerController2D : MonoBehaviour
     private Vector2 originalOffset, originalSize;
     private IEnumerator jumpResetCoroutine;
     private float oldY;
+    private InputManager inputManager;
     
     
 
@@ -25,26 +26,22 @@ public class PlayerController2D : MonoBehaviour
 
         originalOffset = GetComponent<CapsuleCollider2D>().offset;
         originalSize = GetComponent<CapsuleCollider2D>().size;
+
+        inputManager = GetComponent<InputManager>();
     }
     
-    void Update()
-    {
-        float hor = Input.GetAxis("Horizontal") * Time.deltaTime; // A(-) ve D(+) tuslari
-        // float ver = Input.GetAxis("Vertical") * Time.deltaTime; // S(-) ve W(+) tuslari
-        float jump = Input.GetAxis("Jump");
-        
-
+    void Update() {
         // level 3
-        if (hor<0 && !targetRenderer.flipX) {
+        if (inputManager.horizontal<0 && !targetRenderer.flipX) {
             targetRenderer.flipX=true;
-        } else if (hor>0 && targetRenderer.flipX) {
+        } else if (inputManager.horizontal>0 && targetRenderer.flipX) {
             targetRenderer.flipX=false;
         }
 
         
-        if (hor!=0f) {
+        if (inputManager.horizontal!=0f) {
             // shifte basiliysa
-            if (Input.GetKey(KeyCode.LeftShift)) {
+            if (inputManager.run) {
                 multiplier = runValue;
                 GetComponent<Animator>().SetFloat("moveMode", 2f);
             } else {
@@ -56,7 +53,7 @@ public class PlayerController2D : MonoBehaviour
             GetComponent<Animator>().SetFloat("moveMode", 0);
 
         
-        if (jump>0 && !isJumping) {
+        if (inputManager.jump>0 && !isJumping) {
             isJumping = true;
             animator.SetFloat("moveMode",4);
 
@@ -66,7 +63,7 @@ public class PlayerController2D : MonoBehaviour
             GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce);
         }
 
-        transform.position += transform.right * (hor * moveSpeed * multiplier);
+        transform.position += transform.right * (inputManager.horizontal * moveSpeed * multiplier);
         CheckGround();
         oldY = transform.position.y;
     }
