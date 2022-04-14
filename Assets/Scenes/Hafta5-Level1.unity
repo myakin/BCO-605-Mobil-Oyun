@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18029553, g: 0.2257272, b: 0.30693007, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2758,6 +2758,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2139011300763858492, guid: b6f65ce4bff7543759af5615ee55ad3e,
+        type: 3}
+      propertyPath: runButton
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139011300763858492, guid: b6f65ce4bff7543759af5615ee55ad3e,
+        type: 3}
+      propertyPath: jumpButton
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2139011300763858492, guid: b6f65ce4bff7543759af5615ee55ad3e,
+        type: 3}
+      propertyPath: fixedJoystick
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8640443790918711477, guid: b6f65ce4bff7543759af5615ee55ad3e,
         type: 3}
       propertyPath: m_Name
@@ -2771,12 +2786,12 @@ PrefabInstance:
     - target: {fileID: 8640443790918711479, guid: b6f65ce4bff7543759af5615ee55ad3e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.52
+      value: -6.26
       objectReference: {fileID: 0}
     - target: {fileID: 8640443790918711479, guid: b6f65ce4bff7543759af5615ee55ad3e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.22
+      value: 5.31
       objectReference: {fileID: 0}
     - target: {fileID: 8640443790918711479, guid: b6f65ce4bff7543759af5615ee55ad3e,
         type: 3}

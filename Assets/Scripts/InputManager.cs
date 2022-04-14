@@ -7,9 +7,17 @@ public class InputManager : MonoBehaviour {
     public bool run;
     private Vector2 touchBeginPoint, touchMovePoint, touchEndPoint;
 
+    public JumpButton jumpButton;
+    public JumpButton runButton;
+    public FixedJoystick fixedJoystick;
+
+    
+
+
     private void Update() {
         GetKeyboardInput();
         GetTouchInput();
+        GetJoystickInput();
     }
 
     private void GetKeyboardInput() {
@@ -50,5 +58,20 @@ public class InputManager : MonoBehaviour {
             jump = 0;
         }
     }
+
+    private void GetJoystickInput() {
+        if (fixedJoystick!=null) {
+            horizontal = fixedJoystick.Horizontal * Time.deltaTime;
+            vertical = fixedJoystick.Vertical * Time.deltaTime;
+        }
+        if (jumpButton!=null) {
+            jump = jumpButton.isPressed ? 1 : 0;
+        }
+        if (runButton!=null) {
+            run = runButton.isPressed;
+        }
+    }
+
+   
 
 }

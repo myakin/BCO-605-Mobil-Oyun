@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour {
 
     public Text scoreText;
 
+    private void Start() {
+        SceneLoader.instance.LoadSceneAdditive("JoystickScene");
+    }
 
     public void SetScore(int value) {
         scoreText.text = value.ToString();
