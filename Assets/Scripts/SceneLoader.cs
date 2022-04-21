@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour {
     public static SceneLoader instance;
+
+    public delegate void DelegateWithNoArguments();
+    public DelegateWithNoArguments onSceneLoadedAction, onSceneUnloadedAction;
+
     
     private void Awake() {
         if (instance==null) {
@@ -38,10 +42,34 @@ public class SceneLoader : MonoBehaviour {
     }
 
     
-    public void LoadSceneAdditive(string aSceneName) {
+    public void LoadSceneAdditive(string aSceneName, DelegateWithNoArguments continueWith = null) {
+        onSceneLoadedAction = continueWith;
+        SceneManager.sceneLoaded+=OnSceneLoaded;
         SceneManager.LoadScene(aSceneName, LoadSceneMode.Additive);
     }
-    public void UnloadScene(string aSceneName) {
+        
+    public void UnloadScene(string aSceneName, DelegateWithNoArguments continueWith = null) {
+        onSceneUnloadedAction = continueWith;
+        SceneManager.sceneUnloaded+=OnSceneUnloaded;
         SceneManager.UnloadSceneAsync(aSceneName);   
+        if (continueWith!=null) {
+            continueWith();
+        }
+    }
+
+    private void OnSceneLoaded(Scene aScene, LoadSceneMode aLoadSceneMode) {
+        if (onSceneLoadedAction!=null) {
+            onSceneLoadedAction();
+            onSceneLoadedAction = null;
+        }
+        SceneManager.sceneLoaded-=OnSceneLoaded;
+    }
+
+    private void OnSceneUnloaded(Scene aScene) {
+        if (onSceneUnloadedAction!=null) {
+            onSceneUnloadedAction();
+            onSceneUnloadedAction = null;
+        }
+        SceneManager.sceneUnloaded-=OnSceneUnloaded;
     }
 }

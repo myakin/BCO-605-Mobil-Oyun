@@ -15,57 +15,73 @@ public class PlayerController2D : MonoBehaviour
     private IEnumerator jumpResetCoroutine;
     private float oldY;
     private InputManager inputManager;
+    private bool byPass;
     
     
 
     private void Start() {
         // level 3
         targetRenderer = GetComponent<SpriteRenderer>();
+        byPass = true;
 
+        if (UIManager.instance==null) {
+            SceneLoader.instance.LoadSceneAdditive("PlayerUI");
+        }
+
+        StartCoroutine(InitialLoadCoroutine());
+    }
+
+    private IEnumerator InitialLoadCoroutine() {
+        while (UIManager.instance==null) {
+            yield return null;
+        }
         UIManager.instance.SetScore(DataManager.instance.score);
 
         originalOffset = GetComponent<CapsuleCollider2D>().offset;
         originalSize = GetComponent<CapsuleCollider2D>().size;
 
         inputManager = GetComponent<InputManager>();
+        byPass = false;
     }
     
     void Update() {
-        // level 3
-        if (inputManager.horizontal<0 && !targetRenderer.flipX) {
-            targetRenderer.flipX=true;
-        } else if (inputManager.horizontal>0 && targetRenderer.flipX) {
-            targetRenderer.flipX=false;
-        }
-
-        
-        if (inputManager.horizontal!=0f) {
-            // shifte basiliysa
-            if (inputManager.run) {
-                multiplier = runValue;
-                GetComponent<Animator>().SetFloat("moveMode", 2f);
-            } else {
-                // shifte basili degilse
-                multiplier = 1;
-                GetComponent<Animator>().SetFloat("moveMode", 1f);
+        if (!byPass) {
+            // level 3
+            if (inputManager.horizontal<0 && !targetRenderer.flipX) {
+                targetRenderer.flipX=true;
+            } else if (inputManager.horizontal>0 && targetRenderer.flipX) {
+                targetRenderer.flipX=false;
             }
-        } else 
-            GetComponent<Animator>().SetFloat("moveMode", 0);
 
-        
-        if (inputManager.jump>0 && !isJumping) {
-            isJumping = true;
-            animator.SetFloat("moveMode",4);
+            
+            if (inputManager.horizontal!=0f) {
+                // shifte basiliysa
+                if (inputManager.run) {
+                    multiplier = runValue;
+                    GetComponent<Animator>().SetFloat("moveMode", 2f);
+                } else {
+                    // shifte basili degilse
+                    multiplier = 1;
+                    GetComponent<Animator>().SetFloat("moveMode", 1f);
+                }
+            } else 
+                GetComponent<Animator>().SetFloat("moveMode", 0);
 
-            GetComponent<CapsuleCollider2D>().offset = new Vector2(originalOffset.x, 1.68f);
-            GetComponent<CapsuleCollider2D>().size = new Vector2(originalSize.x, 1.53f);
-            // GetComponent<Rigidbody2D>().simulated = false;
-            GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce);
+            
+            if (inputManager.jump>0 && !isJumping) {
+                isJumping = true;
+                animator.SetFloat("moveMode",4);
+
+                GetComponent<CapsuleCollider2D>().offset = new Vector2(originalOffset.x, 1.68f);
+                GetComponent<CapsuleCollider2D>().size = new Vector2(originalSize.x, 1.53f);
+                // GetComponent<Rigidbody2D>().simulated = false;
+                GetComponent<Rigidbody2D>().AddForce(Vector2.up * jumpForce);
+            }
+
+            transform.position += transform.right * (inputManager.horizontal * moveSpeed * multiplier);
+            CheckGround();
+            oldY = transform.position.y;
         }
-
-        transform.position += transform.right * (inputManager.horizontal * moveSpeed * multiplier);
-        CheckGround();
-        oldY = transform.position.y;
     }
 
     private void CheckGround() {
