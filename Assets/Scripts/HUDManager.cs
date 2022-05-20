@@ -9,10 +9,12 @@ public class HUDManager : MonoBehaviour {
     private Transform mainCamera;
 
     private void Update() {
+        if (Camera.main==null) {
+            return;
+        }
         if (!mainCamera) {
             mainCamera = Camera.main.transform;
         }
-
         transform.rotation = mainCamera.rotation;
     }
 
@@ -21,6 +23,7 @@ public class HUDManager : MonoBehaviour {
     }
     
     public void SetCharacterName(string aName) {
+        Debug.Log(aName);
         nameText.text = aName;
     }
 
